@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Search, SideNavbar, StockCard, Chart } from "../../components";
 import { Container, Row, Col,Media } from "reactstrap";
 import { API, useAuth } from "../../utils";
+import Axios from "axios"
 import "./style.css";
 import logo from "../../assets/imgs/simpleteal.png";
 // loginRequired coming from useAuth in utils folder, ensuring that the user can't access qiktik without being logged in.
@@ -26,29 +27,27 @@ useEffect(() => {
     .catch((err) => console.log(err));
   }
 
- 
-
   function handleInput(event) {
   if(event){
     let symbol=event[0].symbol
-    API.getBars(symbol)
-   .then(res=>{
-     let data = res.data
-     const labels= data.map(day =>{
+    const requestOne = API.getBars(symbol);
+    const requestTwo = API.getStock(symbol)
+    Axios.all([requestOne,requestTwo])
+   .then(Axios.spread((...res)=>{
+     let chart = res[0].data
+     let card = res[1].data
+     setDisplayData(card)
+     const labels= chart.map(day =>{
       let theDate = new Date(day.startEpochTime*1000)
       return theDate.toLocaleDateString()
        });
-     const close = data.map(day=>day.closePrice);
-     const high = data.map(day => day.highPrice);
-     const low = data.map(day => day.lowPrice); 
+     const close = chart.map(day=> day.closePrice);
+     const high = chart.map(day => day.highPrice);
+     const low = chart.map(day => day.lowPrice); 
      setChartData({labels:labels,close:close,high:high,low:low})
      setIsLoading(false)
-    })
+    }))
    .catch(err =>console.log(err))
-   API.getStock(symbol)
-   .then(res=>{
-     setDisplayData(res.data)
-   })
   }
   else{isLoading(true)}
   }

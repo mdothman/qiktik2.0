@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
-import {fetchStocks} from '../../utils/redux'
-import {connect} from "react-redux"
+import {fetchStocks} from '../../utils/redux';
+import {connect} from "react-redux";
 
- function Search({stocksData, fetchStocks}) {
+ function Search({stocksData, fetchStocks,onChange}) {
    useEffect(()=>{
      fetchStocks()
-   },[])
+   },[fetchStocks])
   // typeahead is a reactstrap feature. Searching stock names or symbols
   return stocksData.loading ? (<h2>Loading</h2>)
   : stocksData.error ? (<h2>{stocksData.error}</h2>):(
@@ -16,7 +16,7 @@ import {connect} from "react-redux"
       id="stock-search"
       labelKey={(stock) => `${stock.symbol}: ${stock.name}`}
       options={stocksData.stocks}
-      
+      onChange={onChange}
       placeholder="Choose a stock..."
     ></Typeahead>
   );

@@ -1,12 +1,12 @@
 import {FETCH_STOCKS_REQUEST,FETCH_STOCKS_SUCCESS,FETCH_STOCKS_FAILURE} from "./stocksTypes"
 
-const intitialState = {
+const initialState = {
     loading:false,
     stocks:[],
     error:''
 }
 
-const stocksReducer = (state=intitialState, action) =>{
+const stocksReducer = (state=initialState, action) =>{
     switch(action.type){
         case FETCH_STOCKS_REQUEST:
             return {
