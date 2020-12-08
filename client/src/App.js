@@ -1,11 +1,14 @@
 import React from "react";
+import {Provider} from 'react-redux'
+import store from "./utils/redux/store"
 import { Home, Login, Signup } from "./pages";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <Provider store ={store}>
+       <div className="App">
       <Router>
         <Switch>
           <Route exact path="/">
@@ -20,6 +23,8 @@ function App() {
         </Switch>
       </Router>
     </div>
+    </Provider>
+   
   );
 }
 

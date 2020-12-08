@@ -10,23 +10,14 @@ const Home = () => {
   const { loginRequired } = useAuth();
   const [favoriteStocks, setFavoriteStocks] = useState([]);
   const [displayData, setDisplayData] = useState({});
-  const [stocks, setStocks] = useState([]);
   const [chartData, setChartData] = useState({});
   const [isLoading, setIsLoading] = useState(true)
 useEffect(() => {
     loginRequired();
-    loadStocks();
     // loadFavorites();
   }, [loginRequired]);
+  
 
-  function loadStocks() {
-    API.getStocks()
-      .then((res) => {
-        //console.log(res.data)
-        setStocks(res.data);
-      })
-      .catch((err) => console.log(err));
-  }
   function loadFavorites() {
     API.getFavorites()
     .then(({ data: favorites }) => {
@@ -86,7 +77,7 @@ useEffect(() => {
               <Media object src={logo} alt="qiktik" id="homeLogo" />
             </Media>
           </div>
-          <Search name="symbolLookup" onChange={(event)=>handleInput(event)} stocks={stocks} />
+          <Search name="symbolLookup" onChange={(event)=>handleInput(event)}  />
 
           
             <Col>
